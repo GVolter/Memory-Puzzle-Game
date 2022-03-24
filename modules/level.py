@@ -7,13 +7,11 @@ class Level():
         self.level = level
         self.level_complete = False
         self.all_cards = [f for f in os.listdir('pics/cards') if os.path.join('pics/cards', f)]
-
         self.img_width, self.img_height = (64, 64)
         self.padding = 20
         self.margin_top = 160
-        # self.cols = 3
-        # self.rows = 4
         self.width = 800
+        self.cursor_rect = pygame.Rect(0, 0, 20, 20)
 
         self.tiles_group = pygame.sprite.Group()
 
@@ -89,4 +87,7 @@ class Level():
         self.tiles_group.update()
 
         if self.level_complete:
-            self.game.draw_text('Congratulations!', 64, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 1.2)
+            self.game.playing_easy, self.game.playing_medium, self.game.playing_hard = False, False, False
+            self.game.curr_menu = self.game.endMenu
+            self.level_complete = False
+            self.generate_level(self.level)

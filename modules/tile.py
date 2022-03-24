@@ -20,10 +20,6 @@ class Tile(pygame.sprite.Sprite):
 
     def show(self):
         self.shown = True
+        
     def hide(self):
         self.shown = False
-    
-    # def draw(self):
-    #     self.game.display.blit(self.image,self.rect)
-    #     if self.shown:
-    #         self.game.display.blit(self.original_image, self.rect)

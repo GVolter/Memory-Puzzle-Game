@@ -19,7 +19,7 @@ class Menu():
 class MainMenu(Menu):
     def __init__(self, game):
         Menu.__init__(self, game)
-        self.state = "Start"
+        self.state = 'Start'
         self.startx, self.starty = self.mid_w, self.mid_h + 30
         self.exitx, self.exity = self.mid_w, self.mid_h + 90
         self.cursor_rect.midtop = (self.startx + self.offset, self.starty)
@@ -31,8 +31,8 @@ class MainMenu(Menu):
             self.check_input()
             self.game.display.fill(self.game.PASTELBLUE)
             self.game.draw_text('MEMO.it', 128, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 3 - 20)
-            self.game.draw_text("Start Game", 40, self.startx, self.starty)
-            self.game.draw_text("Exit", 40, self.exitx, self.exity)
+            self.game.draw_text('Start Game', 40, self.startx, self.starty)
+            self.game.draw_text('Exit', 40, self.exitx, self.exity)
             self.draw_cursor()
             self.blit_screen()
 
@@ -50,7 +50,7 @@ class MainMenu(Menu):
         self.move_cursor()
         if self.game.START_KEY:
             if self.state == 'Start':
-                self.game.curr_menu = self.game.difficulty
+                self.game.curr_menu = self.game.difficultyMenu
             elif self.state == 'Exit':
                 pygame.quit()
                 sys.exit()
@@ -59,7 +59,6 @@ class MainMenu(Menu):
 class DifficultyMenu(Menu):
     def __init__(self, game):
         Menu.__init__(self, game)
-        self.lvl = 1
         self.state = 'Easy'
         self.easyx, self.easyy = self.mid_w, self.mid_h + 20
         self.mediumx, self.mediumy = self.mid_w, self.mid_h + 60
@@ -74,10 +73,10 @@ class DifficultyMenu(Menu):
             self.check_input()
             self.game.display.fill(self.game.PASTELBLUE)
             self.game.draw_text('Difficulty:', 64, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 60)
-            self.game.draw_text("Easy", 40, self.easyx, self.easyy)
-            self.game.draw_text("Medium", 40, self.mediumx, self.mediumy)
-            self.game.draw_text("Hard", 40, self.hardx, self.hardy)
-            self.game.draw_text("Back", 40, self.backx, self.backy)
+            self.game.draw_text('Easy', 40, self.easyx, self.easyy)
+            self.game.draw_text('Medium', 40, self.mediumx, self.mediumy)
+            self.game.draw_text('Hard', 40, self.hardx, self.hardy)
+            self.game.draw_text('Back', 40, self.backx, self.backy)
             self.draw_cursor()
             self.blit_screen()
 
@@ -112,18 +111,52 @@ class DifficultyMenu(Menu):
                 self.state = 'Hard'
                 self.cursor_rect.midtop = (self.hardx + self.offset, self.hardy)
         elif self.game.START_KEY:
-            # TO-DO: Create different levels
             if self.state == 'Back':
                 self.game.curr_menu = self.game.main_menu
             if self.state == 'Easy':
-                self.lvl=1
-                self.game.playing = True
+                self.game.playing_easy = True
             if self.state == 'Medium':
-                self.lvl=2
-                self.game.playing = True
+                self.game.playing_medium = True
             if self.state == 'Hard':
-                self.lvl=3
-                self.game.playing = True
+                self.game.playing_hard = True
+            self.run_display = False
+
+class EndMenu(Menu):
+    def __init__(self, game):
+        Menu.__init__(self, game)
+        self.state = 'Play again'
+        self.opt1x, self.opt1y = self.mid_w - 200, self.mid_h + 80
+        self.opt2x, self.opt2y = self.mid_w + 150, self.mid_h + 80
+        self.cursor_rect.midtop = (self.opt1x + self.offset + 50, self.opt1y)
+
+    def display_menu(self):
+        self.run_display = True
+        while self.run_display:
+            self.game.check_events()
+            self.check_input()
+            self.game.display.fill(self.game.PASTELBLUE)
+            self.game.draw_text('Congratulations!', 64, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2)
+            self.game.draw_text('Play again', 32, self.opt1x, self.opt1y)
+            self.game.draw_text('Back to main menu', 32, self.opt2x, self.opt2y)
+            self.draw_cursor()
+            self.blit_screen()
+
+    def check_input(self):
+        if self.game.BACK_KEY:
+            self.game.curr_menu = self.game.main_menu
+            self.run_display = False
+        elif self.game.LEFT_KEY or self.game.RIGHT_KEY:
+            if self.state == 'Play again':
+                self.state = 'Back to main menu'
+                self.cursor_rect.midtop = (self.opt2x + self.offset - 20, self.opt2y)
+            elif self.state == 'Back to main menu':
+                self.state = 'Play again'
+                self.cursor_rect.midtop = (self.opt1x + self.offset + 50, self.opt1y)
+        elif self.game.START_KEY:
+            if self.state == 'Back to main menu':
+                self.game.curr_menu = self.game.main_menu
+            if self.state == 'Play again':
+                self.game.curr_menu = self.game.difficultyMenu
             self.run_display = False
 
 
