@@ -1,2 +1,10 @@
 # Memory Puzzle Game
-A simple memory puzzle created using Pygame library. It includes 3 levels based on easy, medium and hard difficulty and in the future options of limited time and limited number of tries will be added. Also the possibilty to return to main menu or play again after finishing a game will be coming soon.
+![logo](./pics/logo_game.png)
+
+A simple memory puzzle created using Pygame library. 
+* It has 3 difficulties: Easy (3x4) , Medium (4x4) and Hard(4x5)
+* Options to Play Again and Return to Main Menu
+* Incoming:  
+  - limted time and number of tries           
+  - difficulty based on more than the grid size 
+* It is pretty :)
